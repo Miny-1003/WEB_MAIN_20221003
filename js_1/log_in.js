@@ -3,6 +3,7 @@ const check_input = () => {
     const loginBtn = document.getElementById('login_btn');
     const emailInput = document.getElementById('typeEmailX');
     const passwordInput = document.getElementById('typePasswordX');
+    
     const c = '아이디, 패스워드를 체크합니다';
     alert(c);
 

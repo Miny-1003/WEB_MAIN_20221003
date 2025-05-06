@@ -10,9 +10,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js" integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+" crossorigin="anonymous"></script>
 
-  <script type="text/javascript" src="js_1/basic_text.js"></script>
   <script type="text/javascript" defer src="js_1/search.js"></script>
-  <script type="text/javascript" src="js_1/data_type.js"></script>
   <script type="text/javascript" defer src="js_1/pop_up.js"></script>
 
   <style>
@@ -20,7 +18,6 @@
       display: block;
     }
   </style>
-  
 </head>
 
 <body style="background-color: #000;" onload="pop_up();">
@@ -28,7 +25,7 @@
     <nav class="navbar navbar-expand-lg" style="background-color: black;">
       <div class="container-fluid">
         <a class="navbar-brand" href="https://www.riotgames.com/ko">
-          <img src="image/LOGO_RIOT.png" width="200" height="100" alt="Logo">
+          <img src="../image/LOGO_RIOT.png" width="200" height="100" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
           <span class="navbar-toggler-icon"></span>
@@ -58,7 +55,8 @@
                 <li><a class="dropdown-item" href="https://support-valorant.riotgames.com/hc/ko">고객지원</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="https://playvalorant.com/ko-kr/news/announcements/valorant-community-code/">커뮤니티 행동 수칙</a></li>
-              </ul>              
+              </ul>
+              
             </li>
             <li class="nav-item"><a class="nav-link text-white" href="#">이벤트</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#">소셜 미디어</a></li>
@@ -69,17 +67,18 @@
             <input class="form-control me-2" id="search_input" name="q" type="search" placeholder="입력" aria-label="Search">
             <button class="btn btn-outline-success text-nowrap" id="search_btn_msg" type="submit">검색</button>
           </form>
+          <span class="text-white ms-3">??? 님</span>
+          <form action="index_logout.html" method="get" class="ms-2">
+            <button type="submit" class="btn btn-outline-success" id="logout_btn">로그아웃</button>
+          </form>
         </div>
-        <form action="login_1/log_in.html" method="get" class="ms-2">
-          <button type="submit" class="btn btn-outline-success">로그인</button>
-        </form>
       </div>
     </nav>
   </div>
 
   <div class="d-flex justify-content-center mt-3">
     <a href="https://playvalorant.com/ko-kr/" target="_blank">
-      <img src="image/MAIN_VAL.png" class="img-fluid" width="1200" height="768">
+      <img src="../image/MAIN_VAL.png" class="img-fluid" width="1200" height="768">
     </a>
   </div>
 
@@ -107,7 +106,7 @@
           <th scope="row">1</th>
           <td>제트</td>
           <td>클로브</td>
-          <td><img src="image/FACE_SOVA_VAL.jpg" width="60" height="60">소바</td>
+          <td><img src="../image/FACE_SOVA_VAL.jpg" width="60" height="60">소바</td>
         </tr>
         <tr>
           <th scope="row">2</th>
