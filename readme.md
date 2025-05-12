@@ -1,10 +1,17 @@
 # HTML 프로젝트 - 깃허브
 새로운 시작! 웹 서비스 개발의 세계로 떠나보아요~
-## Getting Started
+
+## 개인 웹페이지 제작 시작(이름 : index_valorant.html)
 This project is a starting point for a Web application.
 - [프로젝트 메인 주소](https://github.com/Miny-1003/WEB_MAIN_20221003)
-## 개인 웹페이지 제작 시작(이름 : index_valorant.html)
+
 ## 2주차 수업 메인화면 개발 완료! (문제 포함)
+- image 폴더 속 로고 이미지 index.html에 적용 (img src)
+- 백그라운드 검정색으로 수정 (body style)
+- 텍스트 메뉴 제작 (게임정보, 미디어, 소식, 고객지원 등등) (div)
+- 메인 로비 화면 제작 (div, img src)
+- 하단 텍스트 추가 완료 (Riot Games Company...) (div, h3)
+
 ## 3주차 수업 부트스트랩 적용 완료! (문제 포함) 
 - 배경 색 없는 로고로 변경 및 메뉴 드롭다운 일부 적용(하이퍼링크 내포)
 ## 4주차 수업 부트스트랩 네비게이션 바 및 테이블 적용 완료! (문제 포함) 
