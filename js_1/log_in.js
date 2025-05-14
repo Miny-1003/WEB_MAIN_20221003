@@ -8,11 +8,37 @@ const check_xss = (input) => {
   return sanitizedInput;
 };
 
+function setCookie(name, value, expiredays) {
+  var date = new Date();
+  date.setDate(date.getDate() + expiredays);
+  document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + "; path=/" + "; SameSite=None; Secure";
+  }
+
+function getCookie(name) {
+  var cookie = document.cookie;
+  console.log("쿠키를 요청합니다.");
+  if (cookie != "") {
+      var cookie_array = cookie.split("; ");
+      for ( var index in cookie_array) {
+          var cookie_name = cookie_array[index].split("=");
+
+          if (cookie_name[0] == "id") {
+                  return cookie_name[1];
+          }
+      }
+  }
+  return ;
+}
+
 const check_input = () => {
   const loginForm = document.getElementById('login_form');
   const loginBtn = document.getElementById('login_btn');
   const emailInput = document.getElementById('typeEmailX');
   const passwordInput = document.getElementById('typePasswordX');
+
+  // 전역 변수 추가, 맨 위 위치
+  const idsave_check = document.getElementById('idSaveCheck');
+
 
   const c = '아이디, 패스워드를 체크합니다';
   alert(c);
@@ -91,6 +117,17 @@ const check_input = () => {
   if (doubleDigitRepeatPattern.test(emailValue) || doubleDigitRepeatPattern.test(passwordValue)) {
     alert('2자리 이상 연속되는 숫자 반복은 사용할 수 없습니다.');
     return false;
+  }
+
+  // 검사 마무리 단계 쿠키 저장, 최하단 submit 이전
+  if(idsave_check.checked == true) { // 아이디 체크 o
+    alert("쿠키를 저장합니다.", emailValue);
+    setCookie("id", emailValue, 1); // 1일 저장
+    alert("쿠키 값 :" + emailValue);
+  }
+
+  else{ // 아이디 체크 x
+    setCookie("id", emailValue.value, 0); //날짜를 0 - 쿠키 삭제
   }
 
   console.log('이메일:', emailValue);

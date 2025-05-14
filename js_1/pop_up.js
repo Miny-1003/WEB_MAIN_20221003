@@ -49,7 +49,7 @@ function pop_up() {
 
 // 팝업 이미지 이벤트
 function over(obj) {
-    obj.src = "image/LOGO_LOL.png";
+    obj.src = "image/LOGO_VAL.png";
 }
 
 function out(obj) {
