@@ -43,13 +43,13 @@ function show_clock() {
 function pop_up() {
     const cookieCheck = getCookie("popupYN");
     if (cookieCheck !== "N") {
-        window.open("popup_1/popup_1.html", "팝업테스트", "width=400, height=300, top=10, left=10");
+        window.open("../popup_1/popup_1.html", "팝업테스트", "width=400, height=300, top=10, left=10");
     }
 }
 
 // 팝업 이미지 이벤트
 function over(obj) {
-    obj.src = "image/LOGO_VAL.png";
+    obj.src = "../image/LOGO_VAL.png";
 }
 
 // const over = (obj) => {
@@ -57,7 +57,7 @@ function over(obj) {
 //     };
 
 function out(obj) {
-    obj.src = "image/LOGO_RIOT.png";
+    obj.src = "../image/LOGO_RIOT.png";
 }
 
 // 팝업 내부: 카운트다운 자동 닫힘
