@@ -13,6 +13,10 @@
   <script type="text/javascript" src="../js/search.js" defer></script>
   <script type="text/javascript" defer src="../js/pop_up.js"></script>
   <script type="text/javascript" src="../js/session.js" defer></script>
+  <script type="text/javascript" src="../js/crypto.js" defer></script>
+  <script type="text/javascript" src="../js/crypto2.js" defer></script>
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     .dropdown:hover .dropdown-menu {
@@ -21,7 +25,7 @@
   </style>
 </head>
 
-<body style="background-color: #000;" onload="pop_up();">
+<body style="background-color: #000;" onload="pop_up();" onload="init_logined();">
   <div class="container-fluid d-flex justify-content-center">
     <nav class="navbar navbar-expand-lg" style="background-color: black;">
       <div class="container-fluid">

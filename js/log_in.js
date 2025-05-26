@@ -10,6 +10,14 @@
     session_check(); // 세션 유무 검사
   }
 
+  async function init_logined(){
+  if (sessionStorage) {
+    const decrypted = await session_get_decrypted_pass();
+    console.log("복호화된 비밀번호:", decrypted);
+  } else {
+    alert("세션 스토리지 지원 x");
+  }
+}
 
   const check_xss = (input) => {
     const DOMPurify = window.DOMPurify;
@@ -95,7 +103,7 @@
   location.href = "../index.html";
 }
 
-const check_input = () => {
+async function check_input() {
   const statusDiv = document.getElementById("loginStatus");
   const lockTime = parseInt(getCookie("login_lock_time"));
   const now = new Date().getTime();
@@ -230,12 +238,17 @@ const check_input = () => {
 
     // 로그인 성공 처리
     login_count();
-    session_set();
+    await session_set();
     setCookie("login_fail_cnt", 0, 1); // 성공 시 실패 횟수 초기화
     loginForm.submit();
   };
 
+  document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("login_btn");
   if (loginBtn) {
-    loginBtn.addEventListener('click', check_input);
+    loginBtn.addEventListener("click", async (e) => {
+      e.preventDefault(); // submit 기본 동작 방지
+      await check_input(); // 비동기 실행
+    });
   }
+});
