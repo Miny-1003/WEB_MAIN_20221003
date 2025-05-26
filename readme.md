@@ -1,11 +1,11 @@
 # HTML 프로젝트 - 깃허브
 
-## 개인 웹페이지 제작 시작(이름 : index_valorant.html)
+## 개인 웹페이지 제작 시작(이름 : index.html)
 - [프로젝트 메인 주소](https://github.com/Miny-1003/WEB_MAIN_20221003)
 
 ## 2주차 수업: 메인화면 개발 완료! (문제 포함)
 
-- image 폴더 속 로고 이미지 index_valorant.html에 적용 (img src)
+- image 폴더 속 로고 이미지 index.html에 적용 (img src)
 - 백그라운드 검정색으로 수정 (body style)
 - 텍스트 메뉴 제작 (게임정보, 미디어, 소식, 고객지원 등등) (div)
 - 메인 로비 화면 제작 (div, img src)
@@ -24,7 +24,7 @@ part1.
 part2.
 - meta viewport 적용(반응형 웹디자인 기초 작업)
 - Popper.js(드롭다운에 필요)와 Bootstrap JS를 CDN으로 불러오는 코드 작성
-- 부트스트랩 접속 후 nav 코드 긁어서 index_valorant.html에 적용
+- 부트스트랩 접속 후 nav 코드 긁어서 index.html에 적용
 - 기존 텍스트 메뉴 삭제 후 nav 코드 속에 재작성
 - 메뉴 드롭다운 일부(고객지원) 적용 (연습 문제)
 - nav 색상 검정색으로 변경 (연습 문제)
@@ -53,7 +53,7 @@ part2.
     - search.js 작성(.getElementById, addEventListener, function, alert) 후 <head> 태그에 <script> 태그로 삽입.
     - 검색창 버튼(속이 색칠 되지 않은) 기능 구현 (button class, id, type="submit") (id가 같아야 작동)
     - defer 속성 추가(search.js)
-- 클릭이벤트 식별자 변경해보기 (스크립트와 index_valorant.html 둘다) (연습 문제)
+- 클릭이벤트 식별자 변경해보기 (스크립트와 index.html 둘다) (연습 문제)
 - 같은 이름의 함수 중첩해보기 (연습 문제)
     - 같은 이름의 함수가 중첩되어도 에러는 나지 않는다. 추가로 마지막에 정의된 함수가 우선순위가 더 높다.
 - 함수에 변수를 추가해 변수를 출력하도록 변경 (연습 문제)
@@ -65,9 +65,9 @@ part2.
     - 객체(참조타입)와 배열
     - MAP 과 SET
     - 템플릿 리터럴
-- index_valorant.html에 검색 기능 구현 ( form, button, googleSearch() )
+- index.html에 검색 기능 구현 ( form, button, googleSearch() )
 - search.js 속 get방식 코드를 추가해 구현
-- 팝업 추가(pop_up.js 및 popup_1.html 추가) (상대 경로 파악)
+- 팝업 추가(pop_up.js 및 popup.html 추가) (상대 경로 파악)
 - 팝업창에 날짜 및 시간 구현
 - pop_up.js 에 호버 함수를 추가해 마우스 이벤트 추가(로고에 마우스 커서 올릴시 이미지 변경)
 - 검색 시 공백검사 적용 (문자 길이가 0이면 함수 중단) (연습 문제)
@@ -78,7 +78,7 @@ part2.
 - 화살표 함수 적용해보기
 - 팝업창 자동 닫기 기능 구현 ( .getElementById(), setTimeout() ) (10초 카운트다운)
 - 로그인폼 구현
-    - login_1/log_in.html 부트스트랩을 이용해 코드 작성
+    - login/log_in.html 부트스트랩을 이용해 코드 작성
     - 로그인창 css 별도 적용 (log_in.css)
     - form 태그를 이용해 get방식의 전달과 url주소 확인 (로그인 수행)
     - name 속성을 이용해 이메일, 패스워드 데이터 전송
@@ -90,7 +90,7 @@ part2.
 - 로그인 창 구현(index.login.html)
     - 로그아웃 버튼 추가 구현
 - 로그아웃 버튼 누를 시 이동하는 index_logout.html 구현 (응용 문제)
-    - index_logout.html 화면 속 로그아웃 버튼을 누를시 index_valorant.html로 연결 (로그아웃)
+    - index_logout.html 화면 속 로그아웃 버튼을 누를시 index.html로 연결 (로그아웃)
 - 로그인, 로그아웃 창 팝업.js연동 부분 제거 (연습 문제)
 - 폴더 및 파일 체크, 들여쓰기 정렬
 
@@ -106,7 +106,27 @@ part1.
 
 part2.
 - 팝업창 닫기 시간 1000초로 증가
-- popup_1.html 에 쿠키 생성 체크박스 추가
+- popup.html 에 쿠키 생성 체크박스 추가
 - pop_up.js 에 setCookie와 getCookie 추가
 - 체크박스 클릭 시 팝업이 닫히도록 설정
 - 크로스 사이트 취약점 보안 설정 추가 ( Secure )
+
+## 10주차 수업:
+
+part1.
+- 아이디 체크박스 추가 ("checkbox mb-3", lavel, id="idSaveCheck")
+- 체크박스 쿠키 생성 구현
+    - 체크 상태 X 일 경우, 쿠키삭제(기존 set, get 이용)
+- 아이디 자동 삽입 구현
+- 로그인/로그아웃 횟수 쿠키 저장 (로그인/아웃 할때 각각 횟수 쿠키 생성) (응용 문제)
+    - 문제발생 : 횟수 셀때 value 값이 NAN으로 나오는 오류 발생
+    - 해결 : if (cookie_name[0].trim() === name) {
+                return cookie_name[1];
+                } 
+            : 브라우저가 쿠키를 문자열로 넘길 때 공백이 붙어나올 수 있는 부작용때문에 .trim()을 통해 공백을 제거함으로써 해결되었다.
+
+part2.
+- 체크박스 후 로그인하면 로그인 정보 세션이 뜨도록 설정
+- 체크박스 체크후 로그인하고 로그아웃했을 시에 다시 로그인 하면 자동로그인이 되도록 설정(세션 유지)
+- 로그아웃 시 추가 선택으로 세션 삭제 유무를 고를 수 있도록 하고 체크 후 로그아웃 하면 자동로그인 안되게 환경 구성(응용 문제)
+- 로그인 조건에 부합하지 않으면 login_failed()를 통해 3번이상 실패 시 10분동안 로그인 처리가 이루어지지않게 설정(연습 문제)
