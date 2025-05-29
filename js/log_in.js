@@ -99,6 +99,9 @@
     console.log("자동 로그인 세션 제거됨");
   }
 
+  // JWT 토큰 삭제
+  localStorage.removeItem('jwt_token');
+  
   logout_count(); // 로그아웃 횟수 증가는 항상 실행
   location.href = "../index.html";
 }
@@ -138,6 +141,12 @@ async function check_input() {
 
     const emailValue = emailInput.value.trim();
     const passwordValue = passwordInput.value.trim();
+
+    const payload = {
+      id: emailValue,
+      exp: Math.floor(Date.now() / 1000) + 3600 // 1시간 (3600초)
+    };
+    const jwtToken = generateJWT(payload);
 
     if (emailValue === '') {
       alert('이메일을 입력하세요.');
@@ -240,6 +249,9 @@ async function check_input() {
     login_count();
     await session_set();
     setCookie("login_fail_cnt", 0, 1); // 성공 시 실패 횟수 초기화
+
+    localStorage.setItem('jwt_token', jwtToken);
+
     loginForm.submit();
   };
 
