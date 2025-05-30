@@ -25,7 +25,7 @@ async function init_logined() {
   // 사용자 이름 표시
   const userDisplay = document.getElementById("userDisplay");
   if (userDisplay && decrypted?.id) {
-    userDisplay.innerText = `${decrypted.id} 님`;
+    userDisplay.innerHTML = `<span class="text-danger">${decrypted.id} </span> 님`;
   }
 
   console.log("복호화된 비밀번호:", decrypted.password); // 확인용

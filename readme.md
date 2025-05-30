@@ -150,13 +150,15 @@ part2.
 - 토큰 검증 확인
 -  .removeItem 메소드를 통해 로그아웃 시 토큰 삭제 함수 구현(연습 문제)
 
-## 12주차 수업: 모듈화
+## 12주차 수업: 모듈화 및 회원가입 기능 구현
 
-part1.
+part1. 모듈화
 - log_in.js 모듈화 진행 그에 따른 부가 코드 수정
     - session.js 수정
-    - crypto2.js 수정
+    - crypto2.js 수정 : 수정하며 session.js와 crypto2.js, log_in.js가 유기적으로 이루어질수 있도록 재수정을 거침
     - log_out.js 기능 추가(기존 log_in.js에서 추출 후 기능 별도 구현)
+
+- index_login.html 에서 로그인시 사용자 아이디가 보이게 설정 ( ~ 님)
 
 - 오류! : log_in2.js에 필요한 기능만을 조율하는 과정에서 session.check() 가 모든 상황에서 리디액션하는 문제 발생
     - 따라서 session.js 또한 수정이 필요했음
@@ -173,6 +175,15 @@ part1.
               "이미 로그인 되었습니다." 로그가 뜸 -> index_login.html로 이동이 되어야 했다. 하지만 JWT 토큰은 이미 삭제된 상태여서 -> 로그인 후 초기화 로직에서 인증 오류 발생
               결국, 인증 실패로 다시 index.html로 튕김 ->세션은 남아있지만, JWT 토큰이 없어서 인증이 실패하는 것 (세션(sessionStorage)과 JWT(localStorage)가 서로 불일치된 상태)
             - 해결방안 : session_check()에서 세션 + JWT 둘 다 있어야 로그인 상태로 간주하도록 수정
-- 오류! : log_out.js을 기능 분리하며 setCookie() 함수를 사용하려 했지만 정의되어 있지 않아서 에러가 발생생
 
-- 해결 방안 : setCookie()와 getCookie()를 cookie.js라는 파일로 분리해서 만들어 두고, log_in.js와 log_out.js 모두에서 import
+- 오류! : log_out.js을 기능 분리하며 setCookie() 함수를 사용하려 했지만 정의되어 있지 않아서 에러가 발생
+
+    - 해결 방안 : setCookie()와 getCookie()를 cookie.js을 새로 만들어 분리하고, log_in.js와 log_out.js 모두에서 import
+
+- 오류! : 로그아웃 화면(index_logout.html)에서 자동로그아웃 해제 부분 체크 안하고 로그아웃 해도 자동로그인이 안되는 문제 발생
+
+    - 해결 방안 : localStorage.removeItem("jwt_token"); 이 코드가 체크박스 체크 여부와 관계없이 계속 작동하고 있었음. 즉, jwt 토큰이 로그아웃 시마다 삭제되었음
+                 따라서 이 부분을 삭제하고 조건문을 추가해 체크박스 여부를 한번더 따지도록 코드 작성
+
+part2. 회원가입
+- 
