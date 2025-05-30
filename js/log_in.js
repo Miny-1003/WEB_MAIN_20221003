@@ -1,8 +1,13 @@
 import { session_set, session_get_decrypted_pass, session_check, session_del } from './session.js';
 import { encrypt_text, decrypt_text } from './crypto2.js';
 import { generateJWT, checkAuth } from './jwt_token.js';
+import { setCookie, getCookie } from './cookie.js';
 
-function init(){ // 로그인 폼에 쿠키에서 가져온 아이디 입력
+document.addEventListener('DOMContentLoaded', async () => {
+  await init();
+});
+
+async function init(){ // 로그인 폼에 쿠키에서 가져온 아이디 입력
   const emailInput = document.getElementById('typeEmailX');
   const idsave_check = document.getElementById('idSaveCheck');
   let get_id = getCookie("id");
@@ -11,12 +16,20 @@ function init(){ // 로그인 폼에 쿠키에서 가져온 아이디 입력
     emailInput.value = get_id;
     idsave_check.checked = true;
   }
-  session_check(); // 세션 유무 검사
-}
+  // JWT 유효성 검사를 먼저 수행
+  const jwt = localStorage.getItem('jwt_token');
+  const sessionExists = sessionStorage.getItem("Session_Storage_id");
 
-document.addEventListener('DOMContentLoaded', () => {
-  init();
-});
+  if (jwt && sessionExists) {
+    try {
+      await checkAuth(); // JWT 유효한 경우만 리디렉션
+      session_check({ redirectIfLoggedIn: true, redirectIfNotLoggedIn: false });
+    } catch (err) {
+      console.warn("자동 로그인 실패: JWT 무효함");
+      localStorage.removeItem('jwt_token'); // 무효한 경우 정리
+    }
+  }
+}
 
 
 async function init_logined(){
@@ -39,30 +52,30 @@ const check_xss = (input) => {
   return sanitizedInput;
 };
 
-// 쿠키 세팅 함수
-function setCookie(name, value, expiredays) {
-  var date = new Date();
-  date.setDate(date.getDate() + expiredays);
-  document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) +
-    "; expires=" + date.toUTCString() + "; path=/; SameSite=None; Secure";
-}
+// // 쿠키 세팅 함수
+// function setCookie(name, value, expiredays) {
+//   var date = new Date();
+//   date.setDate(date.getDate() + expiredays);
+//   document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) +
+//     "; expires=" + date.toUTCString() + "; path=/; SameSite=None; Secure";
+// }
 
-// 쿠키 가져오기 함수
-function getCookie(name) {
-  const cookie = document.cookie;
-  console.log("쿠키를 요청합니다.");
-  if (cookie !== "") {
-    const cookie_array = cookie.split("; ");
-    for (let index in cookie_array) {
-      const cookie_name = cookie_array[index].split("=");
+// // 쿠키 가져오기 함수
+// function getCookie(name) {
+//   const cookie = document.cookie;
+//   console.log("쿠키를 요청합니다.");
+//   if (cookie !== "") {
+//     const cookie_array = cookie.split("; ");
+//     for (let index in cookie_array) {
+//       const cookie_name = cookie_array[index].split("=");
 
-      if (cookie_name[0].trim() === name) {
-        return cookie_name[1];
-      }
-    }
-  }
-  return null;
-}
+//       if (cookie_name[0].trim() === name) {
+//         return cookie_name[1];
+//       }
+//     }
+//   }
+//   return null;
+// }
 
 // 로그인 실패 처리 및 차단 타이머
 function login_failed() {
@@ -264,7 +277,7 @@ if (lockTime && now - lockTime >= 3 * 60 * 1000) {
   await session_set();
   setCookie("login_fail_cnt", 0, 1); // 성공 시 실패 횟수 초기화
 
-  localStorage.setItem('jwt_token', jwtToken);
+  localStorage.setItem('jwt_token', jwtToken); // 로그인 성공 시 저장됨
 
   loginForm.submit();
 };

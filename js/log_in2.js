@@ -38,6 +38,7 @@ async function init_logined() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   await checkAuth();     // JWT 유효성 검사
-  await session_check(); // 세션 존재 검사 (없으면 index.html로 리디렉션)
+  // await session_check(); // 세션 존재 검사 (없으면 index.html로 리디렉션)
+  await session_check({ redirectIfLoggedIn: false, redirectIfNotLoggedIn: true }); // 세션 없으면 로그인 화면으로
   await init_logined();  // 복호화해서 화면 표시
 });

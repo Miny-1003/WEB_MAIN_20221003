@@ -38,22 +38,29 @@ export async function session_get_decrypted_pass() {
   return decryptedObj; // 반환값이 password가 아닌 객체 전체로 변경됨
 }
 
-// 세션 로그인 확인
-export async function session_check(redirectIfLoggedIn = true) {
-  const id = sessionStorage.getItem("Session_Storage_id");
-  if (!id) {
-    alert("로그인이 필요합니다.");
-    location.href = '../index.html';
-    return false;
-  }
+// 리팩토링 핵심 함수
+// 로그인 상태 체크 함수
+export async function session_check({
+  redirectIfLoggedIn = true,
+  redirectIfNotLoggedIn = false
+} = {}) {
+  const sessionExists = sessionStorage.getItem("Session_Storage_id");
+  const jwt = localStorage.getItem("jwt_token");
 
-  if (redirectIfLoggedIn) {
-    const decryptedObj = await session_get_decrypted_pass();
-    alert("이미 로그인 되어 있습니다.");
-    location.href = '../login/index_login.html';
+  // 세션과 JWT가 모두 존재할 때만 로그인 상태로 간주
+  if (sessionExists && jwt) {
+    // 현재 페이지가 index_login.html이 아닌 경우에만 이동
+    if (redirectIfLoggedIn && !location.pathname.includes("index_login.html")) {
+      alert("이미 로그인 되어 있습니다.");
+      location.href = '../login/index_login.html';
+    }
+  } else {
+    // 로그인 안된 경우 옵션에 따라 처리
+    if (redirectIfNotLoggedIn) {
+      alert("로그인이 필요합니다.");
+      location.href = '../index.html';
+    }
   }
-
-  return true;
 }
 
 export function session_del() {

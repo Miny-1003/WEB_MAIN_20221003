@@ -158,10 +158,21 @@ part1.
     - crypto2.js 수정
     - log_out.js 기능 추가(기존 log_in.js에서 추출 후 기능 별도 구현)
 
-- 오류!: log_in2.js에 필요한 기능만을 조율하는 과정에서 session.check() 가 모든 상황에서 리디액션하는 문제 발생
+- 오류! : log_in2.js에 필요한 기능만을 조율하는 과정에서 session.check() 가 모든 상황에서 리디액션하는 문제 발생
     - 따라서 session.js 또한 수정이 필요했음
 
     - 해결 방안 : session.check()에 조건인자를 추가하여 로그인시에는 검사를 하지만 로그인 후 메인 페이지에선 검사하지 않도록 수정
 
         - 추가 오류: 수정한 session_check() 함수는 "세션이 없으면 index.html로 리디렉션"하게 설계해, 로그인하러 들어가는 log_in.html에서도 그걸 막아버리는 오류가 생김
-        - 
+        - session_check 옵션 설정 
+            - log_in.js : { redirectIfLoggedIn: true } (로그인한 사용자는 로그인 페이지 못 들어오게 함)
+            - log_in2.js : { redirectIfNotLoggedIn: true } (로그인 안 했으면 메인 화면 접근 못하게 막음)
+        
+        - 추가 오류 : 이전에 자동 로그인을 위해 (체크박스를 통한)세션을 유지하는 기능을 구현했었는데 이 부분에서 추가 오류가 발생했다.
+            - 상세 설명 : 로그아웃 시 체크박스를 해제하면 세션을 남겨둠 (자동 로그인 목적) 이후 사용자가 /log_in.html로 접속 -> session_check()가 자동 실행되며
+              "이미 로그인 되었습니다." 로그가 뜸 -> index_login.html로 이동이 되어야 했다. 하지만 JWT 토큰은 이미 삭제된 상태여서 -> 로그인 후 초기화 로직에서 인증 오류 발생
+              결국, 인증 실패로 다시 index.html로 튕김 ->세션은 남아있지만, JWT 토큰이 없어서 인증이 실패하는 것 (세션(sessionStorage)과 JWT(localStorage)가 서로 불일치된 상태)
+            - 해결방안 : session_check()에서 세션 + JWT 둘 다 있어야 로그인 상태로 간주하도록 수정
+- 오류! : log_out.js을 기능 분리하며 setCookie() 함수를 사용하려 했지만 정의되어 있지 않아서 에러가 발생생
+
+- 해결 방안 : setCookie()와 getCookie()를 cookie.js라는 파일로 분리해서 만들어 두고, log_in.js와 log_out.js 모두에서 import
