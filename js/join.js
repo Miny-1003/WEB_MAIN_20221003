@@ -2,10 +2,8 @@ import { encrypt_text } from "./crypto2.js";
 import { sanitizeInput, validateId, validatePassword } from "./validation.js";
 
 // 정규표현식 정의
-const idRegex = /^[a-zA-Z0-9]{4,15}$/; // 영문/숫자 조합, 4~15자
 const nameRegex = /^[가-힣]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 // 회원가입 실행 함수
 async function join() {
@@ -83,46 +81,24 @@ async function join() {
     return;
   }
 
-  // // 회원가입 정보 객체 정의
-  // class SignUp {
-  //   constructor(userId, name, email, password, re_password) {
-  //     this._id = userId;
-  //     this._name = name;
-  //     this._email = email;
-  //     this._password = password;
-  //     this._re_password = re_password;
-  //   }
-
-  //   setUserInfo(userId, name, email, password, re_password) {
-  //     this._id = userId;
-  //     this._name = name;
-  //     this._email = email;
-  //     this._password = password;
-  //     this._re_password = re_password;
-  //   }
-
-  //   getUserInfo() {
-  //     return {
-  //       id: this._id,
-  //       name: this._name,
-  //       email: this._email,
-  //       password: this._password,
-  //       re_password: this._re_password,
-  //     };
-  //   }
-  // }
-
-  // 모든 유효성 검사를 통과한 경우
-  const userObj = {
+  //  단일 객체로 유저 정보 구성
+  const userInfo = {
     id: userId.value,
     name: name.value,
     email: email.value,
     password: password.value,
   };
 
-  const encrypted = await encrypt_text(JSON.stringify(userObj)); // 암호화
-  sessionStorage.setItem("SignUp_Info", JSON.stringify(encrypted)); // 암호화된 정보 저장
+  // 전체 객체를 한 번에 암호화
+  const encrypted = await encrypt_text(JSON.stringify(userInfo));
 
+  //  단일 키로 sessionStorage에 저장
+  sessionStorage.setItem("UserInfo_Encrypted", JSON.stringify(encrypted));
+
+  // 콘솔 로그 확인용
+  console.log("암호화된 회원가입 정보:", encrypted);
+
+  // 폼 전송
   form.action = "../index.html";
   form.method = "get";
   form.submit();

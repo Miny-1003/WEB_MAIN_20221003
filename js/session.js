@@ -1,37 +1,40 @@
 import { encrypt_text, decrypt_text } from "./crypto2.js";
 
 export async function session_set() {
-  //세션 저장
-  let session_id = document.querySelector("#typeIdX");
-  let session_pass = document.querySelector("#typePasswordX"); // DOM 트리에서 pass 검색
-  let random = new Date(); // 랜덤 타임스탬프
+  const session_id = document.querySelector("#typeIdX");
+  const session_pass = document.querySelector("#typePasswordX");
+  const timestamp = new Date().toISOString();
 
   const obj = {
-    // 객체 선언
     id: session_id.value,
-    otp: random,
-    password: session_pass.value, // password도 암호화 객체에 포함 (기존에는 단일 비번만 저장)
+    password: session_pass.value,
+    otp: timestamp,
   };
 
-  if (sessionStorage) {
-    const objString = JSON.stringify(obj); // 객체 → 문자열 변환
-    const encrypted = await encrypt_text(objString); // encrypt_text로 암호화
-
-    sessionStorage.setItem("Session_Storage_id", session_id.value);
-    sessionStorage.setItem("Session_Storage_object", objString);
-    sessionStorage.setItem("Session_Storage_pass", JSON.stringify(encrypted));
-  } else {
-    alert("세션 스토리지 지원 x");
+  if (!sessionStorage) {
+    alert("세션 스토리지를 지원하지 않습니다.");
+    return;
   }
+
+  const objString = JSON.stringify(obj);
+  const encrypted = await encrypt_text(objString);
+  sessionStorage.setItem("UserInfo_Encrypted", JSON.stringify(encrypted)); // 단일 키로 저장
+  sessionStorage.setItem("Session_Storage_id", session_id.value);
 }
 
-// 세션 복호화된 비밀번호 반환
+// 단일 객체 복호화 방식으로 리팩토링된 함수
 export async function session_get_decrypted_pass() {
-  const encryptedData = JSON.parse(
-    sessionStorage.getItem("Session_Storage_pass")
-  ); // 키 이름 변경됨
-  const decryptedObj = await decrypt_text(encryptedData); // decrypt_text는 내부에서 키 자동 처리
-  return decryptedObj; // 반환값이 password가 아닌 객체 전체로 변경됨
+  const encryptedStr = sessionStorage.getItem("UserInfo_Encrypted");
+  if (!encryptedStr) return null;
+
+  try {
+    const encryptedObj = JSON.parse(encryptedStr);
+    const decryptedJson = await decrypt_text(encryptedObj); // 복호화 수행
+    return decryptedJson; // 객체 그대로 반환
+  } catch (e) {
+    console.warn("복호화 실패:", e);
+    return null;
+  }
 }
 
 // 리팩토링 핵심 함수

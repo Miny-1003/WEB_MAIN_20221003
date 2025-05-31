@@ -5,6 +5,7 @@ import {
 } from "./session.js";
 import { generateJWT, checkAuth } from "./jwt_token.js";
 import { setCookie, getCookie } from "./cookie.js";
+import { decrypt_text } from "./crypto2.js";
 import { sanitizeInput, validateId, validatePassword } from "./validation.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -86,13 +87,13 @@ function login_failed() {
 
   setCookie("login_fail_cnt", failCnt, 1); // 1일 동안 유지
 
-  if (failCnt >= 3) {
+  if (failCnt >= 5) {
     const now = new Date().getTime();
     setCookie("login_lock_time", now, 1); // 현재 시각 저장 (10분 제한 시작)
 
-    alert(`로그인 실패 횟수: ${failCnt}회\n10분간 로그인이 제한됩니다.`);
+    alert(`로그인 실패 횟수: ${failCnt}/5회\n10분간 로그인이 제한됩니다.`);
   } else {
-    alert(`로그인 실패 횟수: ${failCnt}회`);
+    alert(`로그인 실패 횟수: ${failCnt}/5회`);
   }
 }
 
@@ -109,30 +110,6 @@ function login_count() {
   setCookie("login_cnt", cnt, 7);
   console.log("로그인 횟수:", cnt);
 }
-
-// // 로그아웃 횟수 증가
-// function logout_count() {
-//   let cnt = parseInt(getCookie("logout_cnt") || "0");
-//   cnt++;
-//   setCookie("logout_cnt", cnt, 7);
-//   console.log("로그아웃 횟수:", cnt);
-// }
-
-// function logout() {
-// const autoLogoutChecked = document.getElementById("autoLogoutCheck")?.checked;
-
-// if (autoLogoutChecked) {
-//   session_del(); // 체크된 경우에만 세션 삭제
-//   setCookie("id", "", 0); // ID 쿠키도 삭제
-//   console.log("자동 로그인 세션 제거됨");
-// }
-
-// // JWT 토큰 삭제
-// localStorage.removeItem('jwt_token');
-
-// logout_count(); // 로그아웃 횟수 증가는 항상 실행
-// location.href = "../index.html";
-// }
 
 async function check_input() {
   const statusDiv = document.getElementById("loginStatus");
@@ -220,12 +197,13 @@ async function check_input() {
 
   // 로그인 성공 처리
   login_count();
-  await session_set();
-  setCookie("login_fail_cnt", 0, 1); // 성공 시 실패 횟수 초기화
+  // 로그인 성공 처리 후
+  await session_set(); // 이 안에서 암호화됨
+  setCookie("login_fail_cnt", 0, 1);
+  localStorage.setItem("jwt_token", jwtToken);
 
-  localStorage.setItem("jwt_token", jwtToken); // 로그인 성공 시 저장됨
-
-  await init_logined(); // 로그인 성공 직후 사용자 정보 복호화
+  // session_set() 내부에서 암호화 저장 끝냄 -> 여기에 따로 encrypt_text 쓰지 않아도 됨
+  await init_logined();
   loginForm.submit();
 }
 
