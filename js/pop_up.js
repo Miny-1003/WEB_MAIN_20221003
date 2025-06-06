@@ -47,19 +47,6 @@ function pop_up() {
     }
 }
 
-// 팝업 이미지 이벤트
-function over(obj) {
-    obj.src = "../image/LOGO_VAL.png";
-}
-
-// const over = (obj) => {
-//     obj.src = "image/LOGO_VAL.png";
-//     };
-
-function out(obj) {
-    obj.src = "../image/LOGO_RIOT.png";
-}
-
 // 팝업 내부: 카운트다운 자동 닫힘
 let close_time;
 let close_time2 = 1000;

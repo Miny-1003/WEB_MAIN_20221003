@@ -204,7 +204,7 @@ async function check_input() {
 
   // session_set() 내부에서 암호화 저장 끝냄 -> 여기에 따로 encrypt_text 쓰지 않아도 됨
   await init_logined();
-  loginForm.submit();
+  window.location.href = "index_login.html";
 }
 
 // 로그인 버튼 이벤트 연결
