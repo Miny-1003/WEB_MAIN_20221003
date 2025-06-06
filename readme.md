@@ -1,7 +1,7 @@
 # HTML 프로젝트 - 깃허브
 
 ## 개인 웹페이지 제작 시작(이름 : index.html)
-- [프로젝트 메인 주소](https://miny-1003.github.io/ )
+- [프로젝트 메인 주소](https://miny-1003.github.io/Web_home_20221003/)
 
 ## 2주차 수업: 메인화면 개발 완료! (문제 포함)
 
