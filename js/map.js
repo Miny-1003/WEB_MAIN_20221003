@@ -1,27 +1,24 @@
-// 마커를 담을 배열입니다
 var markers = [];
 
-var container = document.getElementById('map'); // 지도를 담을 영역
+var container = document.getElementById('map');
 var options = {
     center: new kakao.maps.LatLng(37.379519, 126.928303),
     level: 3
 };
 var map = new kakao.maps.Map(container, options);
 
-// 마커, 주소 변환, 인포윈도우 객체
+// 공통 마커 / 주소 변환기 / 인포윈도우
 var marker = new kakao.maps.Marker();
 var geocoder = new kakao.maps.services.Geocoder();
 var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 marker.setMap(map);
 
-// 지도 타입 및 컨트롤 추가
-var mapTypeControl = new kakao.maps.MapTypeControl();
-map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-var zoomControl = new kakao.maps.ZoomControl();
-map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+// 지도 컨트롤
+map.addControl(new kakao.maps.MapTypeControl(), kakao.maps.ControlPosition.TOPRIGHT);
+map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
 
-// 지도 클릭 이벤트로 주소 + 마커 표시
+// 지도 클릭 시 마커 이동 + 주소 출력
 kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
     var latlng = mouseEvent.latLng;
     marker.setPosition(latlng);
@@ -34,29 +31,29 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
                 : '(도로명 주소 없음)';
             var jibunAddr = result[0].address.address_name;
 
-            var resultDiv = document.getElementById("clickLatlng");
-            resultDiv.innerHTML =
+            document.getElementById("clickLatlng").innerHTML =
                 `위도: ${latlng.getLat()}<br>경도: ${latlng.getLng()}<br>` +
                 `도로명 주소: ${roadAddr}<br>지번 주소: ${jibunAddr}`;
 
-            var content = `<div style="padding:5px 10px;font-size:13px;">${roadAddr}<br>${jibunAddr}</div>`;
+            var content = `
+                <div class="infowindow-content">
+                    ${roadAddr}<br>${jibunAddr}
+                </div>`;
             infowindow.setContent(content);
             infowindow.open(map, marker);
         }
     });
 });
 
-// 장소 검색 기능
+// 장소 검색
 var ps = new kakao.maps.services.Places();
 
 function searchPlaces() {
     var keyword = document.getElementById('keyword').value;
-
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+    if (!keyword.trim()) {
         alert('키워드를 입력해주세요!');
         return false;
     }
-
     ps.keywordSearch(keyword, placesSearchCB);
 }
 
@@ -64,10 +61,10 @@ function placesSearchCB(data, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
         displayPagination(pagination);
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        alert('검색 결과가 존재하지 않습니다.');
-    } else if (status === kakao.maps.services.Status.ERROR) {
-        alert('검색 중 오류가 발생했습니다.');
+    } else {
+        alert(status === kakao.maps.services.Status.ZERO_RESULT
+            ? '검색 결과가 존재하지 않습니다.'
+            : '검색 중 오류가 발생했습니다.');
     }
 }
 
@@ -80,27 +77,16 @@ function displayPlaces(places) {
     removeAllChildNods(listEl);
     removeMarker();
 
-    for (var i = 0; i < places.length; i++) {
+    for (let i = 0; i < places.length; i++) {
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i),
             itemEl = getListItem(i, places[i]);
 
         bounds.extend(placePosition);
 
-        (function (marker, title) {
-            kakao.maps.event.addListener(marker, 'mouseover', function () {
-                displayInfowindow(marker, title);
-            });
-            kakao.maps.event.addListener(marker, 'mouseout', function () {
-                infowindow.close();
-            });
-            itemEl.onmouseover = function () {
-                displayInfowindow(marker, title);
-            };
-            itemEl.onmouseout = function () {
-                infowindow.close();
-            };
-        })(marker, places[i].place_name);
+        itemEl.onclick = function () {
+            displayInfowindow(marker, places[i].place_name);
+        };
 
         fragment.appendChild(itemEl);
     }
@@ -157,14 +143,13 @@ function removeMarker() {
 
 function displayPagination(pagination) {
     var paginationEl = document.getElementById('pagination'),
-        fragment = document.createDocumentFragment(),
-        i;
+        fragment = document.createDocumentFragment();
 
     while (paginationEl.hasChildNodes()) {
         paginationEl.removeChild(paginationEl.lastChild);
     }
 
-    for (i = 1; i <= pagination.last; i++) {
+    for (let i = 1; i <= pagination.last; i++) {
         var el = document.createElement('a');
         el.href = "#";
         el.innerHTML = i;
@@ -172,12 +157,10 @@ function displayPagination(pagination) {
         if (i === pagination.current) {
             el.className = 'on';
         } else {
-            el.onclick = (function (i) {
-                return function (e) {
-                    e.preventDefault(); // 페이지 스크롤 방지
-                    pagination.gotoPage(i);
-                }
-            })(i);
+            el.onclick = function (e) {
+                e.preventDefault();
+                pagination.gotoPage(i);
+            };
         }
 
         fragment.appendChild(el);
@@ -186,7 +169,7 @@ function displayPagination(pagination) {
 }
 
 function displayInfowindow(marker, title) {
-    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+    var content = `<div class="infowindow-content">${title}</div>`;
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }

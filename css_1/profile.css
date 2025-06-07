@@ -212,3 +212,12 @@ button,
   white-space: pre-line;
   line-height: 1.6;
 }
+
+.infowindow-content {
+  padding: 5px 10px;
+  font-size: 13px;
+  max-width: 250px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+}
