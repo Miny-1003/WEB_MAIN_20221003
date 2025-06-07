@@ -91,7 +91,7 @@ function displayPlaces(places) {
     listStr = "";
 
   // 검색 결과 목록에 추가된 항목들을 제거합니다
-  removeAllChildNods(listEl);
+  removeAllChildNodes(listEl);
 
   // 지도에 표시되고 있는 마커를 제거합니다
   removeMarker();
@@ -241,7 +241,7 @@ function displayInfowindow(marker, title) {
 }
 
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다
-function removeAllChildNods(el) {
+function removeAllChildNodes(el) {
   while (el.hasChildNodes()) {
     el.removeChild(el.lastChild);
   }
