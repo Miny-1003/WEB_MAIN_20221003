@@ -7,22 +7,22 @@ var options = {
 };
 var map = new kakao.maps.Map(container, options);
 
-// 공통 마커 (지도 클릭용), 지오코더, 인포윈도우
-var marker = new kakao.maps.Marker();
-var geocoder = new kakao.maps.services.Geocoder();
-var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-marker.setMap(map);
-
 // 지도 컨트롤
 map.addControl(new kakao.maps.MapTypeControl(), kakao.maps.ControlPosition.TOPRIGHT);
 map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
 
-// 지도 클릭 시 공통 마커 이동 + 주소 표시
+// 공통 객체
+var geocoder = new kakao.maps.services.Geocoder();
+var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+// 지도 클릭 시 마커 이동 + 주소 출력
+var clickMarker = new kakao.maps.Marker();
+clickMarker.setMap(map);
+
 kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
     var latlng = mouseEvent.latLng;
-    marker.setPosition(latlng);
-    marker.setMap(map);
+    clickMarker.setPosition(latlng);
 
     geocoder.coord2Address(latlng.getLng(), latlng.getLat(), function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
@@ -37,12 +37,9 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
                 `<span class="addr-line">도로명 주소: ${roadAddr}</span><br>` +
                 `<span class="addr-line">지번 주소: ${jibunAddr}</span>`;
 
-            var content = `
-                <div class="infowindow-content">
-                    ${roadAddr}<br>${jibunAddr}
-                </div>`;
+            var content = `<div class="infowindow-content">${roadAddr}<br>${jibunAddr}</div>`;
             infowindow.setContent(content);
-            infowindow.open(map, marker);
+            infowindow.open(map, clickMarker);
         }
     });
 });
@@ -86,11 +83,13 @@ function displayPlaces(places) {
 
         bounds.extend(placePosition);
 
-        // 추천 목록 클릭 시 마커 이동 및 인포윈도우
-        itemEl.onclick = function () {
-            map.panTo(placePosition);
-            displayInfowindow(marker, places[i].place_name);
-        };
+        // 리스트 클릭 시 해당 마커로 이동하고 인포윈도우 표시
+        (function (marker, title, position) {
+            itemEl.onclick = function () {
+                map.setCenter(position);
+                displayInfowindow(marker, title);
+            };
+        })(marker, places[i].place_name, placePosition);
 
         fragment.appendChild(itemEl);
     }
