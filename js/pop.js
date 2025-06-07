@@ -1,7 +1,8 @@
 function setCookie(name, value, expiredays) {
   var date = new Date();
   date.setDate(date.getDate() + expiredays);
-  document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + "; path=/";
+  document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + "; path=/" +
+        "; SameSite=None; Secure";
 }
 
 function closePopup() {
