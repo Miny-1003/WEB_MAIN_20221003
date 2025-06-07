@@ -99,24 +99,34 @@ function displayPlaces(places) {
     map.setBounds(bounds);
 }
 
-function getListItem(index, places) {
-    var el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-            '<div class="info">' +
-            '   <h5>' + places.place_name + '</h5>';
+function getListItem(index, place) {
+    var el = document.createElement('li');
 
-    if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-            '   <span class="jibun gray">' + places.address_name + '</span>';
-    } else {
-        itemStr += '    <span>' + places.address_name + '</span>';
+    let itemStr = `
+        <span class="markerbg marker_${index + 1}"></span>
+        <div class="info">
+            <h5>${place.place_name}</h5>
+    `;
+
+    if (place.road_address_name) {
+        itemStr += `<span>${place.road_address_name}</span>`;
     }
 
-    itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
+    if (place.address_name) {
+        itemStr += `<span class="jibun gray">${place.address_name}</span>`;
+    }
+
+    if (place.phone) {
+        itemStr += `<span class="tel">${place.phone}</span>`;
+    }
+
+    itemStr += '</div>';
+
     el.innerHTML = itemStr;
     el.className = 'item';
     return el;
 }
+
 
 function addMarker(position, idx) {
     var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
