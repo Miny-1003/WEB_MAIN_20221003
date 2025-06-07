@@ -221,4 +221,13 @@ part2. 회원가입
         - 해결 : 여러 방식을 시도해 보던중 profile.html은 index_login.html과 log_in2.js를 공유하기에
                  안되는 이유를 비교하며 분석한 결과 head에 crypto-js JS 스크립트 유무임을 찾아내어 겨우 해결함.
 
+- 지도 API 구현
+- 카카오맵 활성화
+- profile.html에 자바 스크립트 연동 완료
+- map.js 작성 후 지도 정보를 삽입
+- 주소 위치 지정 및 주요 맵 기본 기능 구현완료(기본 스크롤 줌 인, 아웃, 드래그 맵 이동 등)
+    - &libraries=services,clusterer,drawing 추가
+- 일반 지도 및 / 스카이뷰 전환 기능 구현
+- 클릭한 좌표의 위도,경도 출력하도록 설정
+- 키워드를 검색하고 목록을 출력하는 기능 구현
 
