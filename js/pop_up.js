@@ -43,7 +43,7 @@ function show_clock() {
 function pop_up() {
     const cookieCheck = getCookie("popupYN");
     if (cookieCheck !== "N") {
-        window.open("../popup/popup.html", "팝업테스트", "width=400, height=300, top=10, left=10");
+        window.open("popup/popup.html", "팝업테스트", "width=400, height=300, top=10, left=10");
     }
 }
 
@@ -86,3 +86,7 @@ function over(obj) {
 function out(obj) {
     obj.src = "image/LOGO_RIOT.png";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  pop_up(); // 페이지 로딩 끝나고 자동으로 팝업 실행
+});
