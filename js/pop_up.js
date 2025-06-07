@@ -2,7 +2,8 @@
 function setCookie(name, value, expiredays) {
     var date = new Date();
     date.setDate(date.getDate() + expiredays);
-    document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + "; path=/";
+    document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + "; path=/" +
+        "; SameSite=None; Secure"; ;
 }
 
 // 쿠키 조회
@@ -24,7 +25,7 @@ function getCookie(name) {
 function pop_up() {
     var cookieCheck = getCookie("popupYN");
     if (cookieCheck !== "N") {
-        // 절대경로 추천: GitHub Pages에서 안정적으로 동작
+        // GitHub Pages에서 안정적으로 동작
         window.open("/Web_home_20221003/popup/popup.html", "팝업테스트", "width=400,height=300,top=10,left=10");
     }
 }
