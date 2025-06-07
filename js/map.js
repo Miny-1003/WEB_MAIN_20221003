@@ -7,7 +7,7 @@ var options = {
 };
 var map = new kakao.maps.Map(container, options);
 
-// 공통 객체
+// 공통 마커 (지도 클릭용), 지오코더, 인포윈도우
 var marker = new kakao.maps.Marker();
 var geocoder = new kakao.maps.services.Geocoder();
 var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -18,7 +18,7 @@ map.addControl(new kakao.maps.MapTypeControl(), kakao.maps.ControlPosition.TOPRI
 map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
 
-// 지도 클릭 시 마커 이동 + 주소 표시
+// 지도 클릭 시 공통 마커 이동 + 주소 표시
 kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
     var latlng = mouseEvent.latLng;
     marker.setPosition(latlng);
@@ -26,12 +26,16 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
     geocoder.coord2Address(latlng.getLng(), latlng.getLat(), function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
-            var roadAddr = result[0].road_address?.address_name || '(도로명 주소 없음)';
+            var roadAddr = result[0].road_address
+                ? result[0].road_address.address_name
+                : '(도로명 주소 없음)';
             var jibunAddr = result[0].address.address_name;
 
             document.getElementById("clickLatlng").innerHTML =
-                `위도: ${latlng.getLat()}<br>경도: ${latlng.getLng()}<br>` +
-                `도로명 주소: ${roadAddr}<br>지번 주소: ${jibunAddr}`;
+                `<span class="coord-line">위도: ${latlng.getLat()}</span><br>` +
+                `<span class="coord-line">경도: ${latlng.getLng()}</span><br>` +
+                `<span class="addr-line">도로명 주소: ${roadAddr}</span><br>` +
+                `<span class="addr-line">지번 주소: ${jibunAddr}</span>`;
 
             var content = `
                 <div class="infowindow-content">
@@ -82,8 +86,9 @@ function displayPlaces(places) {
 
         bounds.extend(placePosition);
 
+        // 추천 목록 클릭 시 마커 이동 및 인포윈도우
         itemEl.onclick = function () {
-            map.panTo(placePosition); // 부드럽게 해당 위치로 이동
+            map.panTo(placePosition);
             displayInfowindow(marker, places[i].place_name);
         };
 

@@ -207,16 +207,23 @@ button,
 
 #clickLatlng {
   font-size: 0.95rem;
-  color: #333;
-  margin-top: 0.5rem;
   white-space: pre-line;
   line-height: 1.6;
+}
+
+/* 위도, 경도는 파란색 */
+.coord-line {
+  color: #007bff;
+}
+
+/* 도로명 주소, 지번 주소는 검정색 */
+.addr-line {
+  color: #000000;
 }
 
 .infowindow-content {
   padding: 5px 10px;
   font-size: 13px;
-  color: #4A4A4A;
   max-width: 250px;
   white-space: normal;
   overflow-wrap: break-word;
