@@ -216,6 +216,7 @@ button,
 .infowindow-content {
   padding: 5px 10px;
   font-size: 13px;
+  color: #4A4A4A;
   max-width: 250px;
   white-space: normal;
   overflow-wrap: break-word;
