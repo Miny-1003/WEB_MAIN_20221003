@@ -220,7 +220,8 @@ function displayPagination(pagination) {
       el.className = "on";
     } else {
       el.onclick = (function (i) {
-        return function () {
+        return function (e) {
+          e.preventDefault(); 
           pagination.gotoPage(i);
         };
       })(i);
